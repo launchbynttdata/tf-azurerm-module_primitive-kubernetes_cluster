@@ -17,7 +17,7 @@ import (
 
 	"github.com/nexient-llc/lcaf-component-terratest-common/lib"
 	"github.com/nexient-llc/lcaf-component-terratest-common/types"
-	testimpl "github.com/nexient-llc/tf-module-skeleton/tests/testimpl"
+	testimpl "github.com/nexient-llc/tf-azurerm-module_primitive-kubernetes_cluster/tests/testimpl"
 )
 
 const (
