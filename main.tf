@@ -102,6 +102,7 @@ module "aks" {
   rbac_aad_azure_rbac_enabled       = var.rbac_aad_azure_rbac_enabled
   rbac_aad_tenant_id                = var.rbac_aad_tenant_id
   rbac_aad_admin_group_object_ids   = var.rbac_aad_admin_group_object_ids
+  local_account_disabled            = var.local_account_disabled
 
   # Service Principal
   client_id     = var.client_id
