@@ -12,7 +12,7 @@
 
 module "aks" {
   source  = "Azure/aks/azurerm"
-  version = "~> 7.4"
+  version = "~> 7.5"
 
   resource_group_name             = var.resource_group_name
   location                        = var.location
@@ -107,6 +107,60 @@ module "aks" {
   # Service Principal
   client_id     = var.client_id
   client_secret = var.client_secret
+
+  oidc_issuer_enabled       = var.oidc_issuer_enabled
+  workload_identity_enabled = var.workload_identity_enabled
+
+  aci_connector_linux_enabled                       = var.aci_connector_linux_enabled
+  aci_connector_linux_subnet_name                   = var.aci_connector_linux_subnet_name
+  admin_username                                    = var.admin_username
+  agents_pool_kubelet_configs                       = var.agents_pool_kubelet_configs
+  agents_proximity_placement_group_id               = var.agents_proximity_placement_group_id
+  azure_policy_enabled                              = var.azure_policy_enabled
+  cluster_log_analytics_workspace_name              = var.cluster_log_analytics_workspace_name
+  confidential_computing                            = var.confidential_computing
+  create_role_assignment_network_contributor        = var.create_role_assignment_network_contributor
+  disk_encryption_set_id                            = var.disk_encryption_set_id
+  ebpf_data_plane                                   = var.ebpf_data_plane
+  enable_host_encryption                            = var.enable_host_encryption
+  enable_node_public_ip                             = var.enable_node_public_ip
+  http_application_routing_enabled                  = var.http_application_routing_enabled
+  kms_enabled                                       = var.kms_enabled
+  kms_key_vault_key_id                              = var.kms_key_vault_key_id
+  load_balancer_profile_enabled                     = var.load_balancer_profile_enabled
+  load_balancer_profile_idle_timeout_in_minutes     = var.load_balancer_profile_idle_timeout_in_minutes
+  load_balancer_profile_managed_outbound_ip_count   = var.load_balancer_profile_managed_outbound_ip_count
+  load_balancer_profile_managed_outbound_ipv6_count = var.load_balancer_profile_managed_outbound_ipv6_count
+  load_balancer_profile_outbound_ip_address_ids     = var.load_balancer_profile_outbound_ip_address_ids
+  load_balancer_profile_outbound_ip_prefix_ids      = var.load_balancer_profile_outbound_ip_prefix_ids
+  load_balancer_profile_outbound_ports_allocated    = var.load_balancer_profile_outbound_ports_allocated
+  log_analytics_workspace                           = var.log_analytics_workspace
+  log_analytics_workspace_enabled                   = var.log_analytics_workspace_enabled
+  log_analytics_workspace_resource_group_name       = var.log_analytics_workspace_resource_group_name
+  log_analytics_workspace_sku                       = var.log_analytics_workspace_sku
+  log_retention_in_days                             = var.log_retention_in_days
+  maintenance_window                                = var.maintenance_window
+  maintenance_window_node_os                        = var.maintenance_window_node_os
+  microsoft_defender_enabled                        = var.microsoft_defender_enabled
+  monitor_metrics                                   = var.monitor_metrics
+  network_contributor_role_assigned_subnet_ids      = var.network_contributor_role_assigned_subnet_ids
+  only_critical_addons_enabled                      = var.only_critical_addons_enabled
+  orchestrator_version                              = var.orchestrator_version
+  public_network_access_enabled                     = var.public_network_access_enabled
+  public_ssh_key                                    = var.public_ssh_key
+  rbac_aad_client_app_id                            = var.rbac_aad_client_app_id
+  rbac_aad_server_app_id                            = var.rbac_aad_server_app_id
+  rbac_aad_server_app_secret                        = var.rbac_aad_server_app_secret
+  scale_down_mode                                   = var.scale_down_mode
+  snapshot_id                                       = var.snapshot_id
+  storage_profile_blob_driver_enabled               = var.storage_profile_blob_driver_enabled
+  storage_profile_disk_driver_enabled               = var.storage_profile_disk_driver_enabled
+  storage_profile_disk_driver_version               = var.storage_profile_disk_driver_version
+  storage_profile_enabled                           = var.storage_profile_enabled
+  storage_profile_file_driver_enabled               = var.storage_profile_file_driver_enabled
+  storage_profile_snapshot_controller_enabled       = var.storage_profile_snapshot_controller_enabled
+  temporary_name_for_rotation                       = var.temporary_name_for_rotation
+  ultra_ssd_enabled                                 = var.ultra_ssd_enabled
 
   tags = var.tags
 

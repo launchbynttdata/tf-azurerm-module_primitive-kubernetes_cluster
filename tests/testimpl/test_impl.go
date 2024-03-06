@@ -7,7 +7,7 @@ import (
 )
 
 func TestComposableComplete(t *testing.T, ctx types.TestContext) {
-	t.Run("TestSkeletonDeployedIsInvokable", func(t *testing.T) {
+	t.Run("TestKubernetes", func(t *testing.T) {
 		// Currently no tests as the public module already contains tests
 
 	})
