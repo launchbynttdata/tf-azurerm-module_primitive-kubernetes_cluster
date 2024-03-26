@@ -3,7 +3,7 @@ package common
 import (
 	"testing"
 
-	"github.com/nexient-llc/lcaf-component-terratest-common/types"
+	"github.com/launchbynttdata/lcaf-component-terratest/types"
 )
 
 func TestComposableComplete(t *testing.T, ctx types.TestContext) {
