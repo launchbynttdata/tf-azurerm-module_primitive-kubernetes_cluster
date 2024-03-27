@@ -1,8 +1,8 @@
 module github.com/launchbynttdata/tf-azurerm-module_primitive-kubernetes_cluster
 
-go 1.20
+go 1.21
 
-require github.com/launchbynttdata/lcaf-component-terratest v1.0.3
+require github.com/launchbynttdata/lcaf-component-terratest v1.0.4
 
 require (
 	cloud.google.com/go v0.105.0 // indirect

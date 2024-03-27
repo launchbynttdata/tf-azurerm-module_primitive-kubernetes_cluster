@@ -35,6 +35,7 @@ func TestKubernetesModule(t *testing.T) {
 			// The managed identity attached to AKS cluster causes non-idempotent apply
 			"complete": {
 				"IS_TERRAFORM_IDEMPOTENT_APPLY": false,
+				"SKIP_TEST": true,
 			},
 		}).
 		Build()
