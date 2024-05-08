@@ -146,7 +146,6 @@ module "aks" {
   network_contributor_role_assigned_subnet_ids      = var.network_contributor_role_assigned_subnet_ids
   only_critical_addons_enabled                      = var.only_critical_addons_enabled
   orchestrator_version                              = var.orchestrator_version
-  public_network_access_enabled                     = var.public_network_access_enabled
   public_ssh_key                                    = var.public_ssh_key
   rbac_aad_client_app_id                            = var.rbac_aad_client_app_id
   rbac_aad_server_app_id                            = var.rbac_aad_server_app_id
