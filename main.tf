@@ -65,7 +65,7 @@ module "aks" {
   agents_availability_zones    = var.agents_availability_zones
   agents_size                  = var.agents_size
   agents_labels                = var.agents_labels
-  agents_tags                  = var.agents_tags
+  agents_tags                  = local.agents_tags
   agents_type                  = var.agents_type
   agents_taints                = var.agents_taints
   agents_pool_max_surge        = var.agents_pool_max_surge
@@ -162,6 +162,6 @@ module "aks" {
   temporary_name_for_rotation                       = var.temporary_name_for_rotation
   ultra_ssd_enabled                                 = var.ultra_ssd_enabled
 
-  tags = var.tags
+  tags = local.tags
 
 }
