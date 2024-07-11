@@ -142,11 +142,6 @@ output "host" {
   value       = module.aks.host
 }
 
-output "http_application_routing_enabled" {
-  description = "The `azurerm_kubernetes_cluster`'s `http_application_routing_enabled` argument. (Optional) Should HTTP Application Routing be enabled?"
-  value       = module.aks.http_application_routing_enabled
-}
-
 output "http_application_routing_zone_name" {
   description = "The `azurerm_kubernetes_cluster`'s `http_application_routing_zone_name` argument. The Zone Name of the HTTP Application Routing."
   value       = module.aks.http_application_routing_zone_name

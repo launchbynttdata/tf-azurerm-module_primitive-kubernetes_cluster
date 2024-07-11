@@ -415,6 +415,13 @@ variable "create_role_assignment_network_contributor" {
   nullable    = false
 }
 
+variable "create_role_assignments_for_application_gateway" {
+  type        = bool
+  default     = true
+  description = "(Optional) Whether to create the corresponding role assignments for application gateway or not. Defaults to `true`."
+  nullable    = false
+}
+
 variable "disk_encryption_set_id" {
   type        = string
   default     = null
@@ -445,12 +452,6 @@ variable "enable_node_public_ip" {
   description = "(Optional) Should nodes in this Node Pool have a Public IP Address? Defaults to false."
 }
 
-variable "http_application_routing_enabled" {
-  type        = bool
-  default     = false
-  description = "Enable HTTP Application Routing Addon (forces recreation)."
-}
-
 variable "identity_ids" {
   type        = list(string)
   default     = null
@@ -468,35 +469,37 @@ variable "identity_type" {
   }
 }
 
-variable "ingress_application_gateway_enabled" {
-  type        = bool
-  default     = false
-  description = "Whether to deploy the Application Gateway ingress controller to this Kubernetes Cluster?"
-  nullable    = false
+variable "brown_field_application_gateway_for_ingress" {
+  type = object({
+    id        = string
+    subnet_id = string
+  })
+  default     = null
+  description = <<-EOT
+    [Definition of `brown_field`](https://learn.microsoft.com/en-us/azure/application-gateway/tutorial-ingress-controller-add-on-existing)
+    * `id` - (Required) The ID of the Application Gateway that be used as cluster ingress.
+    * `subnet_id` - (Required) The ID of the Subnet which the Application Gateway is connected to. Must be set when `create_role_assignments` is `true`.
+  EOT
 }
 
-variable "ingress_application_gateway_id" {
-  type        = string
+variable "green_field_application_gateway_for_ingress" {
+  type = object({
+    name        = optional(string)
+    subnet_cidr = optional(string)
+    subnet_id   = optional(string)
+  })
   default     = null
-  description = "The ID of the Application Gateway to integrate with the ingress controller of this Kubernetes Cluster."
-}
+  description = <<-EOT
+  [Definition of `green_field`](https://learn.microsoft.com/en-us/azure/application-gateway/tutorial-ingress-controller-add-on-new)
+  * `name` - (Optional) The name of the Application Gateway to be used or created in the Nodepool Resource Group, which in turn will be integrated with the ingress controller of this Kubernetes Cluster.
+  * `subnet_cidr` - (Optional) The subnet CIDR to be used to create an Application Gateway, which in turn will be integrated with the ingress controller of this Kubernetes Cluster.
+  * `subnet_id` - (Optional) The ID of the subnet on which to create an Application Gateway, which in turn will be integrated with the ingress controller of this Kubernetes Cluster.
+EOT
 
-variable "ingress_application_gateway_name" {
-  type        = string
-  default     = null
-  description = "The name of the Application Gateway to be used or created in the Nodepool Resource Group, which in turn will be integrated with the ingress controller of this Kubernetes Cluster."
-}
-
-variable "ingress_application_gateway_subnet_cidr" {
-  type        = string
-  default     = null
-  description = "The subnet CIDR to be used to create an Application Gateway, which in turn will be integrated with the ingress controller of this Kubernetes Cluster."
-}
-
-variable "ingress_application_gateway_subnet_id" {
-  type        = string
-  default     = null
-  description = "The ID of the subnet on which to create an Application Gateway, which in turn will be integrated with the ingress controller of this Kubernetes Cluster."
+  validation {
+    condition     = var.green_field_application_gateway_for_ingress == null ? true : (can(coalesce(var.green_field_application_gateway_for_ingress.subnet_id, var.green_field_application_gateway_for_ingress.subnet_cidr)))
+    error_message = "One of `subnet_cidr` and `subnet_id` must be specified."
+  }
 }
 
 variable "key_vault_secrets_provider_enabled" {
@@ -626,6 +629,30 @@ variable "log_analytics_workspace" {
   description = "(Optional) Existing azurerm_log_analytics_workspace to attach azurerm_log_analytics_solution. Providing the config disables creation of azurerm_log_analytics_workspace."
 }
 
+variable "log_analytics_workspace_allow_resource_only_permissions" {
+  type        = bool
+  default     = null
+  description = "(Optional) Specifies if the log Analytics Workspace allow users accessing to data associated with resources they have permission to view, without permission to workspace. Defaults to `true`."
+}
+
+variable "log_analytics_workspace_cmk_for_query_forced" {
+  type        = bool
+  default     = null
+  description = "(Optional) Is Customer Managed Storage mandatory for query management?"
+}
+
+variable "log_analytics_workspace_daily_quota_gb" {
+  type        = number
+  default     = null
+  description = "(Optional) The workspace daily quota for ingestion in GB. Defaults to -1 (unlimited) if omitted."
+}
+
+variable "log_analytics_workspace_data_collection_rule_id" {
+  type        = string
+  default     = null
+  description = "(Optional) The ID of the Data Collection Rule to use for this workspace."
+}
+
 variable "log_analytics_workspace_enabled" {
   type        = bool
   default     = true
@@ -643,6 +670,48 @@ variable "log_analytics_workspace_sku" {
   type        = string
   default     = "PerGB2018"
   description = "The SKU (pricing level) of the Log Analytics workspace. For new subscriptions the SKU should be set to PerGB2018"
+}
+
+variable "log_analytics_workspace_identity" {
+  type = object({
+    identity_ids = optional(set(string))
+    type         = string
+  })
+  default     = null
+  description = <<-EOT
+ - `identity_ids` - (Optional) Specifies a list of user managed identity ids to be assigned. Required if `type` is `UserAssigned`.
+ - `type` - (Required) Specifies the identity type of the Log Analytics Workspace. Possible values are `SystemAssigned` (where Azure will generate a Service Principal for you) and `UserAssigned` where you can specify the Service Principal IDs in the `identity_ids` field.
+EOT
+}
+
+variable "log_analytics_workspace_immediate_data_purge_on_30_days_enabled" {
+  type        = bool
+  default     = null
+  description = "(Optional) Whether to remove the data in the Log Analytics Workspace immediately after 30 days."
+}
+
+variable "log_analytics_workspace_internet_ingestion_enabled" {
+  type        = bool
+  default     = null
+  description = "(Optional) Should the Log Analytics Workspace support ingestion over the Public Internet? Defaults to `true`."
+}
+
+variable "log_analytics_workspace_internet_query_enabled" {
+  type        = bool
+  default     = null
+  description = "(Optional) Should the Log Analytics Workspace support querying over the Public Internet? Defaults to `true`."
+}
+
+variable "log_analytics_workspace_local_authentication_disabled" {
+  type        = bool
+  default     = null
+  description = "(Optional) Specifies if the log Analytics workspace should enforce authentication using Azure AD. Defaults to `false`."
+}
+
+variable "log_analytics_workspace_reservation_capacity_in_gb_per_day" {
+  type        = number
+  default     = null
+  description = "(Optional) The capacity reservation level in GB for this workspace. Possible values are `100`, `200`, `300`, `400`, `500`, `1000`, `2000` and `5000`."
 }
 
 variable "log_retention_in_days" {
@@ -786,6 +855,7 @@ variable "node_pools" {
     enable_host_encryption        = optional(bool)
     enable_node_public_ip         = optional(bool)
     eviction_policy               = optional(string)
+    gpu_instance                  = optional(string)
     kubelet_config = optional(object({
       cpu_manager_policy        = optional(string)
       cpu_cfs_quota_enabled     = optional(bool)
@@ -861,17 +931,20 @@ variable "node_pools" {
     ultra_ssd_enabled            = optional(bool)
     vnet_subnet_id               = optional(string)
     upgrade_settings = optional(object({
-      max_surge = string
+      drain_timeout_in_minutes      = number
+      node_soak_duration_in_minutes = number
+      max_surge                     = string
     }))
     windows_profile = optional(object({
       outbound_nat_enabled = optional(bool, true)
     }))
-    workload_runtime = optional(string)
-    zones            = optional(set(string))
+    workload_runtime      = optional(string)
+    zones                 = optional(set(string))
+    create_before_destroy = optional(bool, true)
   }))
   default     = {}
   description = <<-EOT
-  A map of node pools that about to be created and attached on the Kubernetes cluster. The key of the map can be the name of the node pool, and the key must be static string. The value of the map is a `node_pool` block as defined below:
+  A map of node pools that need to be created and attached on the Kubernetes cluster. The key of the map can be the name of the node pool, and the key must be static string. The value of the map is a `node_pool` block as defined below:
   map(object({
     name                          = (Required) The name of the Node Pool which should be created within the Kubernetes Cluster. Changing this forces a new resource to be created. A Windows Node Pool cannot have a `name` longer than 6 characters. A random suffix of 4 characters is always added to the name to avoid clashes during recreates.
     node_count                    = (Optional) The initial number of nodes which should exist within this Node Pool. Valid values are between `0` and `1000` (inclusive) for user pools and between `1` and `1000` (inclusive) for system pools and must be a value in the range `min_count` - `max_count`.
@@ -884,6 +957,7 @@ variable "node_pools" {
     enable_host_encryption        = (Optional) Should the nodes in this Node Pool have host encryption enabled? Changing this forces a new resource to be created.
     enable_node_public_ip         = (Optional) Should each node have a Public IP Address? Changing this forces a new resource to be created.
     eviction_policy               = (Optional) The Eviction Policy which should be used for Virtual Machines within the Virtual Machine Scale Set powering this Node Pool. Possible values are `Deallocate` and `Delete`. Changing this forces a new resource to be created. An Eviction Policy can only be configured when `priority` is set to `Spot` and will default to `Delete` unless otherwise specified.
+    gpu_instance                  = (Optional) Specifies the GPU MIG instance profile for supported GPU VM SKU. The allowed values are `MIG1g`, `MIG2g`, `MIG3g`, `MIG4g` and `MIG7g`. Changing this forces a new resource to be created.
     kubelet_config = optional(object({
       cpu_manager_policy        = (Optional) Specifies the CPU Manager policy to use. Possible values are `none` and `static`, Changing this forces a new resource to be created.
       cpu_cfs_quota_enabled     = (Optional) Is CPU CFS quota enforcement for containers enabled? Changing this forces a new resource to be created.
@@ -959,13 +1033,16 @@ variable "node_pools" {
     ultra_ssd_enabled            = (Optional) Used to specify whether the UltraSSD is enabled in the Node Pool. Defaults to `false`. See [the documentation](https://docs.microsoft.com/azure/aks/use-ultra-disks) for more information. Changing this forces a new resource to be created.
     vnet_subnet_id               = (Optional) The ID of the Subnet where this Node Pool should exist. Changing this forces a new resource to be created. A route table must be configured on this Subnet.
     upgrade_settings = optional(object({
-      max_surge = string
+      drain_timeout_in_minutes      = number
+      node_soak_duration_in_minutes = number
+      max_surge                     = string
     }))
     windows_profile = optional(object({
       outbound_nat_enabled = optional(bool, true)
     }))
     workload_runtime = (Optional) Used to specify the workload runtime. Allowed values are `OCIContainer` and `WasmWasi`. WebAssembly System Interface node pools are in Public Preview - more information and details on how to opt into the preview can be found in [this article](https://docs.microsoft.com/azure/aks/use-wasi-node-pools)
     zones            = (Optional) Specifies a list of Availability Zones in which this Kubernetes Cluster Node Pool should be located. Changing this forces a new Kubernetes Cluster Node Pool to be created.
+    create_before_destroy = (Optional) Create a new node pool before destroy the old one when Terraform must update an argument that cannot be updated in-place. Set this argument to `true` will add add a random suffix to pool's name to avoid conflict. Default to `true`.
   }))
   EOT
   nullable    = false
@@ -1049,13 +1126,6 @@ variable "private_dns_zone_id" {
   type        = string
   default     = null
   description = "(Optional) Either the ID of Private DNS Zone which should be delegated to this Cluster, `System` to have AKS manage this or `None`. In case of `None` you will need to bring your own DNS server and set up resolving, otherwise cluster will have issues after provisioning. Changing this forces a new resource to be created."
-}
-
-variable "public_network_access_enabled" {
-  type        = bool
-  default     = true
-  description = "(Optional) Whether public network access is allowed for this Kubernetes Cluster. Defaults to `true`. Changing this forces a new resource to be created."
-  nullable    = false
 }
 
 variable "public_ssh_key" {
