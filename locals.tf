@@ -12,17 +12,12 @@
 
 locals {
   default_tags = {
-    provisioner = "terraform"
+    provisioner   = "terraform"
     resource_name = var.cluster_name
   }
 
-  default_agents_tags = {
-    provisioner = "terraform"
-    cluster_name = var.cluster_name
-  }
-
   agents_tags = merge(
-    local.default_agents_tags, 
+    local.default_tags,
     var.agents_tags == null ? {} : var.agents_tags
   )
 
