@@ -114,6 +114,7 @@ module "aks" {
   admin_username                                                  = var.admin_username
   agents_pool_kubelet_configs                                     = var.agents_pool_kubelet_configs
   agents_proximity_placement_group_id                             = var.agents_proximity_placement_group_id
+  automatic_channel_upgrade                                       = var.automatic_channel_upgrade
   azure_policy_enabled                                            = var.azure_policy_enabled
   cluster_log_analytics_workspace_name                            = var.cluster_log_analytics_workspace_name
   confidential_computing                                          = var.confidential_computing
@@ -124,13 +125,16 @@ module "aks" {
   enable_node_public_ip                                           = var.enable_node_public_ip
   kms_enabled                                                     = var.kms_enabled
   kms_key_vault_key_id                                            = var.kms_key_vault_key_id
+  kms_key_vault_network_access                                    = var.kms_key_vault_network_access
   load_balancer_profile_enabled                                   = var.load_balancer_profile_enabled
+  load_balancer_sku                                               = var.load_balancer_sku
   load_balancer_profile_idle_timeout_in_minutes                   = var.load_balancer_profile_idle_timeout_in_minutes
   load_balancer_profile_managed_outbound_ip_count                 = var.load_balancer_profile_managed_outbound_ip_count
   load_balancer_profile_managed_outbound_ipv6_count               = var.load_balancer_profile_managed_outbound_ipv6_count
   load_balancer_profile_outbound_ip_address_ids                   = var.load_balancer_profile_outbound_ip_address_ids
   load_balancer_profile_outbound_ip_prefix_ids                    = var.load_balancer_profile_outbound_ip_prefix_ids
   load_balancer_profile_outbound_ports_allocated                  = var.load_balancer_profile_outbound_ports_allocated
+  log_analytics_solution                                          = var.log_analytics_solution
   log_analytics_workspace                                         = var.log_analytics_workspace
   log_analytics_workspace_allow_resource_only_permissions         = var.log_analytics_workspace_allow_resource_only_permissions
   log_analytics_workspace_cmk_for_query_forced                    = var.log_analytics_workspace_cmk_for_query_forced
