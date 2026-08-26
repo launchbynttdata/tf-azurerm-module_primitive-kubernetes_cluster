@@ -24,6 +24,7 @@ module "aks" {
   identity_type                   = var.identity_type
   identity_ids                    = var.identity_ids
   kubernetes_version              = var.kubernetes_version
+  automatic_channel_upgrade       = var.automatic_channel_upgrade
   cluster_name                    = var.cluster_name
   api_server_subnet_id            = var.api_server_subnet_id
   api_server_authorized_ip_ranges = var.api_server_authorized_ip_ranges
@@ -124,6 +125,8 @@ module "aks" {
   enable_node_public_ip                                           = var.enable_node_public_ip
   kms_enabled                                                     = var.kms_enabled
   kms_key_vault_key_id                                            = var.kms_key_vault_key_id
+  kms_key_vault_network_access                                    = var.kms_key_vault_network_access
+  load_balancer_sku                                               = var.load_balancer_sku
   load_balancer_profile_enabled                                   = var.load_balancer_profile_enabled
   load_balancer_profile_idle_timeout_in_minutes                   = var.load_balancer_profile_idle_timeout_in_minutes
   load_balancer_profile_managed_outbound_ip_count                 = var.load_balancer_profile_managed_outbound_ip_count
@@ -131,6 +134,7 @@ module "aks" {
   load_balancer_profile_outbound_ip_address_ids                   = var.load_balancer_profile_outbound_ip_address_ids
   load_balancer_profile_outbound_ip_prefix_ids                    = var.load_balancer_profile_outbound_ip_prefix_ids
   load_balancer_profile_outbound_ports_allocated                  = var.load_balancer_profile_outbound_ports_allocated
+  log_analytics_solution                                          = var.log_analytics_solution
   log_analytics_workspace                                         = var.log_analytics_workspace
   log_analytics_workspace_allow_resource_only_permissions         = var.log_analytics_workspace_allow_resource_only_permissions
   log_analytics_workspace_cmk_for_query_forced                    = var.log_analytics_workspace_cmk_for_query_forced
