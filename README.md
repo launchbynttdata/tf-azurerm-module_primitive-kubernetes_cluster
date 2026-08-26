@@ -7,6 +7,18 @@
 
 This terraform module provisions a kubernetes cluster on Azure.
 
+## Upgrade Notes
+
+- This release starts forwarding four existing inputs to the upstream `Azure/aks/azurerm` module:
+  - `automatic_channel_upgrade`
+  - `kms_key_vault_network_access`
+  - `load_balancer_sku`
+  - `log_analytics_solution`
+- Existing consumers who previously set these values may now see behavior changes on upgrade because those inputs were previously declared but not applied.
+- Before upgrading, run `terraform plan` and review output carefully if either of the following is set:
+  - `load_balancer_sku`: changing from effective `standard` to configured `basic` can force AKS cluster replacement.
+  - `log_analytics_solution`: providing an existing solution ID disables creation of `azurerm_log_analytics_solution`, which can plan a destroy of a previously managed solution resource.
+
 ## Pre-Commit hooks
 
 [.pre-commit-config.yaml](.pre-commit-config.yaml) file defines certain `pre-commit` hooks that are relevant to terraform, golang and common linting tasks. There are no custom hooks added.
