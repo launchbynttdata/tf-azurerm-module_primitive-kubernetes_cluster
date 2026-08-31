@@ -115,7 +115,6 @@ module "aks" {
   admin_username                                                  = var.admin_username
   agents_pool_kubelet_configs                                     = var.agents_pool_kubelet_configs
   agents_proximity_placement_group_id                             = var.agents_proximity_placement_group_id
-  automatic_channel_upgrade                                       = var.automatic_channel_upgrade
   azure_policy_enabled                                            = var.azure_policy_enabled
   cluster_log_analytics_workspace_name                            = var.cluster_log_analytics_workspace_name
   confidential_computing                                          = var.confidential_computing
@@ -129,7 +128,6 @@ module "aks" {
   kms_key_vault_network_access                                    = var.kms_key_vault_network_access
   load_balancer_sku                                               = var.load_balancer_sku
   load_balancer_profile_enabled                                   = var.load_balancer_profile_enabled
-  load_balancer_sku                                               = var.load_balancer_sku
   load_balancer_profile_idle_timeout_in_minutes                   = var.load_balancer_profile_idle_timeout_in_minutes
   load_balancer_profile_managed_outbound_ip_count                 = var.load_balancer_profile_managed_outbound_ip_count
   load_balancer_profile_managed_outbound_ipv6_count               = var.load_balancer_profile_managed_outbound_ipv6_count
