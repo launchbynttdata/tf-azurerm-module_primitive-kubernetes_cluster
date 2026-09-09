@@ -123,10 +123,6 @@ If `make check` target is successful, developer is good to commit the code to pr
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.3 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~>3.67 |
 
-## Providers
-
-No providers.
-
 ## Modules
 
 | Name | Source | Version |
